@@ -1,8 +1,3 @@
 # Personality-Type-Indicator-using-MBTI
-To create a web application to get your personality type
-by siddhant borade(readme Expert)
-This readme file is created by Siddhant Borade
-FUCK 
-YOU
-ALL
-Readme file contents copyrights reserved-Siddhant Borade
+The purpose of this project is to predict personality types as one of the sixteen categories of Myers Briggs personality types (MBTI) based on the correlation between people's writing styles and their psychological personalities. We believe that social media gives people the platform to express themselves freely and openly and hence those posts can be an indicator of their personality type.
+We acknowledge the fact that all personality types are equal.

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="signup.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'signup.css') }}">
     <title>Signup Page</title>
 </head>
 
@@ -13,27 +13,31 @@
     <header>
         <h2>Personality Prediction Using MBTI</h2>
     </header>
-    <form action="">
+    <form action="" method="POST">
         <fieldset>
             <legend>Sign up Form</legend><br>
             <label for="fname">Username: </label>
-            <input type="text" id="fname" placeholder="Enter Username" minlength="3" required><br><br>
+            <input type="text" name="username" placeholder="Enter Username" minlength="3" required><br><br>
             
-            <label class="gen">Select your gender:-</label><br>
+            <label for="lname">Password: </label>
+            <input type="password" name="password" placeholder="Enter Password" minlength="3" required><br><br>
+            
+
+            <!-- <label class="gen">Select your gender:-</label><br>
             <input type="radio" id="Male" name="Gender_value" value="male">Male<br>
             <input type="radio" id="Female" name="Gender_value" value="female">Female<br>
-            <input type="radio" id="Other" name="Gender_value" value="other">Others<br><br>
+            <input type="radio" id="Other" name="Gender_value" value="other">Others<br><br> -->
             
             <label for="age">Enter your age: </label>
-            <input type="number" id="age" placeholder="Numeric value only" required min="5" max=""><br><br>
+            <input type="number" name="age" placeholder="Numeric value only" required min="5" max=""><br><br>
 
             <label for="email">Enter your Email Id: </label>
-            <input type="email" id="email" required placeholder="example@email.com"><br><br>
+            <input type="email" name="email" required placeholder="example@email.com"><br><br>
             
             <button>Sign Up</button><br>
         </fieldset>
         <footer>
-            <p>Already have an account?   <a href="login.html">Login Now!</a></p>
+            <p>Already have an account?   <a href="{{url_for('login')}}">Login Now!</a></p>
         </footer>
     </form>
 </body>

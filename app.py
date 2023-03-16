@@ -1,8 +1,8 @@
 from flask import *
 from flask_mysqldb import *
 import mysql.connector
-import tweepy 
-import configparser
+'''import tweepy 
+import configparser'''
 
 app = Flask(__name__)
 app.secret_key = "mykey"
@@ -64,9 +64,9 @@ def login():
 # auth.set_access_token(access_token, access_token_secret)
 # api = tweepy.API(auth)
 
-# @app.route('/')
-# def home():
-#     return render_template('home.html')
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 # @app.route('/tweets', methods=['POST'])
 # def tweets():
@@ -79,6 +79,18 @@ def login():
 #         mysql.connection.commit()
     
 #     return 'Tweets stored in MySQL'
+
+@app.route('/getTweets', methods = ['GET', 'POST'])
+def getTweets():
+    if request.method == 'POST':
+        twitter = request.form['twitter_id']
+        cursor = mysql.connection.cursor()
+        cursor.execute('insert into tweets values (%s)',(twitter,))
+        mysql.connection.commit()
+        cursor.close()
+        return redirect(url_for('home'))
+        
+    return render_template('getTweets.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

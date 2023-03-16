@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Enter Twitter ID</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'home.css') }}">
+</head>
+<body>
+	<div class="container">
+		<h1>Enter Twitter ID</h1>
+		<form action="/tweets" method="post">
+			<label for="twitter_id">Twitter ID:</label>
+			<input type="text" id="twitter_id" name="twitter_id" placeholder="Enter Twitter ID">
+			<input type="submit" value="Submit">
+		</form>
+	</div>
+</body>
+</html>

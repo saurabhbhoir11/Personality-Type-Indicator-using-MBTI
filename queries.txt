@@ -1,4 +1,6 @@
+drop database mbti;
 create database mbti;
 use mbti;
 create table users(username varchar(20) primary key, password varchar(30), age int(100), email varchar(30));
+create table tweets(twitter_id varchar(30));
 commit;

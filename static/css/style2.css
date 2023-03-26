@@ -1,0 +1,261 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background: white;
+  color: rgba(113, 127, 245);
+  padding-bottom: 10%;
+}
+.heading{
+    text-align: center;
+    font-size: 3em;
+    margin: 10px ;
+}
+.set1,
+.set2,
+.set3 {
+  text-align: center;
+  margin-bottom: 15vh;
+  width: 100vw;
+  height: 15vh;
+}
+.Q {
+  font-size: 2em;
+  margin-top: 20px;
+}
+.set1 #radios1,
+.set2 #radios2,
+.set3 #radios3 {
+  position: relative;
+  width: 50%;
+  margin: 0 auto;
+}
+.set1 #radios1 input[type="radio"],
+.set2 #radios2 input[type="radio"],
+.set3 #radios3 input[type="radio"] {
+  position: absolute;
+  right: 1000%;
+}
+.set1 label,
+.set2 label,
+.set3 label {
+  float: left;
+  width: 15%;
+  padding-bottom: 15%;
+  margin: 0 2.5%;
+  background: rgba(113, 127, 245, 0.2);
+  border-radius: 50%;
+  cursor: pointer;
+}
+#slider1,
+#slider2,
+#slider3 {
+  position: absolute;
+  left: 0%;
+  top: 0;
+  width: 10%;
+  padding-bottom: 10%;
+  margin: 2.5% 0 0 5%;
+  background: #4154f1;
+  transition: transform 1s;
+  border-radius: 50%;
+  transition: 0.2s left 0.05s ease-in-out;
+}
+#input1:checked ~ #slider1 {
+  animation-name: input1;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  left: 0;
+}
+#input2:checked ~ #slider1 {
+  animation-name: input2;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  left: 20%;
+}
+#input3:checked ~ #slider1 {
+  animation-name: input3;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  left: 40%;
+}
+#input4:checked ~ #slider1 {
+  animation-name: input4;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  left: 60%;
+}
+#input5:checked ~ #slider1 {
+  animation-name: input5;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  left: 80%;
+}
+#input6:checked ~ #slider2 {
+  animation-name: input6;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  left: 0;
+}
+#input7:checked ~ #slider2 {
+  animation-name: input7;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  left: 20%;
+}
+#input8:checked ~ #slider2 {
+  animation-name: input8;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  left: 40%;
+}
+#input9:checked ~ #slider2 {
+  animation-name: input9;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  left: 60%;
+}
+#input10:checked ~ #slider2 {
+  animation-name: input10;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  left: 80%;
+}
+#input11:checked ~ #slider3 {
+  animation-name: input11;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  left: 0;
+}
+#input12:checked ~ #slider3 {
+  animation-name: input12;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  left: 20%;
+}
+#input13:checked ~ #slider3 {
+  animation-name: input13;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  left: 40%;
+}
+#input14:checked ~ #slider3 {
+  animation-name: input14;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  left: 60%;
+}
+#input15:checked ~ #slider3 {
+  animation-name: input15;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  left: 80%;
+}
+
+@keyframes input1 {
+  30%,
+  70% {
+    transform: scale(0.5);
+  }
+}
+@keyframes input2 {
+  30%,
+  70% {
+    transform: scale(0.5);
+  }
+}
+@keyframes input3 {
+  30%,
+  70% {
+    transform: scale(0.5);
+  }
+}
+@keyframes input4 {
+  30%,
+  70% {
+    transform: scale(0.5);
+  }
+}
+@keyframes input5 {
+  30%,
+  70% {
+    transform: scale(0.5);
+  }
+}
+@keyframes input6 {
+  30%,
+  70% {
+    transform: scale(0.5);
+  }
+}
+@keyframes input7 {
+  30%,
+  70% {
+    transform: scale(0.5);
+  }
+}
+@keyframes input8 {
+  30%,
+  70% {
+    transform: scale(0.5);
+  }
+}
+@keyframes input9 {
+  30%,
+  70% {
+    transform: scale(0.5);
+  }
+}
+@keyframes input10 {
+  30%,
+  70% {
+    transform: scale(0.5);
+  }
+}
+@keyframes input11 {
+  30%,
+  70% {
+    transform: scale(0.5);
+  }
+}
+@keyframes input12 {
+  30%,
+  70% {
+    transform: scale(0.5);
+  }
+}
+@keyframes input13 {
+  30%,
+  70% {
+    transform: scale(0.5);
+  }
+}
+@keyframes input14 {
+  30%,
+  70% {
+    transform: scale(0.5);
+  }
+}
+@keyframes input15 {
+  30%,
+  70% {
+    transform: scale(0.5);
+  }
+}

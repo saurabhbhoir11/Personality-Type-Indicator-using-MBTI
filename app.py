@@ -92,5 +92,9 @@ def getTweets():
         
     return render_template('getTweets.html')
 
+@app.route('/takeAtest')
+def takeAtest():
+    return render_template('index2.html')
+
 if __name__ == "__main__":
     app.run(debug=True)

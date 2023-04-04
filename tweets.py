@@ -1,21 +1,21 @@
 import snscrape.modules.twitter as sntwitter
 import pandas as pd
 
-query = "pandas"
+query = "valorant"
 tweets = []
-limit = 5000
+limit = 100000
 
 
-for tweet in sntwitter.TwitterSearchScraper(query).get_items():
+for tweet in sntwitter.TwitterSearchScraper(query=query).get_items():
     
     # print(vars(tweet))
     # break
     if len(tweets) == limit:
         break
     else:
-        tweets.append([tweet.date, tweet.user.username, tweet.content])
+        tweets.append([tweet.date, tweet.rawContent])
         
-df = pd.DataFrame(tweets, columns=['Date', 'User', 'Tweet'])
+df = pd.DataFrame(tweets, columns=['Date', 'Tweet'])
 print(df)
 
 # to save to csv

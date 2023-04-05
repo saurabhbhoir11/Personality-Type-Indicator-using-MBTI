@@ -41,13 +41,13 @@ limit = 1000
 #mod3 = joblib.load('TF1.sav')
 #mod4 = joblib.load('JP1.sav')
 
-with open('modelIE.pkl', 'rb') as f:
+with open('log_modelIE.pkl', 'rb') as f:
     loaded_modelIE = pickle.load(f)
-with open('modelNS.pkl', 'rb') as f:
+with open('log_modelNS.pkl', 'rb') as f:
     loaded_modelNS = pickle.load(f)
-with open('modelTF.pkl', 'rb') as f:
+with open('log_modelTF.pkl', 'rb') as f:
     loaded_modelTF = pickle.load(f)
-with open('modelJP.pkl', 'rb') as f:
+with open('log_modelJP.pkl', 'rb') as f:
     loaded_modelJP = pickle.load(f)
 
 @app.route("/signup", methods=['GET', 'POST'])
@@ -110,7 +110,7 @@ def getTweets():
             tweets = preprocess(tweets)
             type = predict(tweets)
             # print(tweets)
-            pr = '<h1>' + type + '</hi>'
+            pr = '<h1>' + type + '</hi> <br> <h1>' + twitter + '</h1>'
             return pr
         return redirect(url_for('home'))
 
@@ -168,12 +168,16 @@ def preprocess(tweets):
     tweets = " ".join([lemmatizer.lemmatize(w) for w in tweets.split(' ')])
 
     df = pd.read_csv('data.csv')
-    tweets = [tweets]
-    df.append(tweets)
+    print(df.shape)
+    print(df.tail(1))
+    new_row = pd.DataFrame({'posts': [tweets]})
+    df = pd.concat([df, new_row], ignore_index=True)
+    print(df.shape)
+    print(df.tail(1))
     post_list = []
     for i, j in df.posts.iteritems():
         post_list.append(j)
-
+    #tweets = [tweets]
     vector = CountVectorizer(stop_words='english', max_features=1500)
     features = vector.fit_transform(post_list)
     # print(finalfeatures.shape)
@@ -181,7 +185,8 @@ def preprocess(tweets):
     # tf-idf to weigh the importance of words(features) across all posts and select more relevent features
     transform = TfidfTransformer()
     finalFeatures = transform.fit_transform(features).toarray()
-    out = [finalFeatures[8673]]
+    out = [finalFeatures[8674]]
+    #out = finalFeatures
     return out
 
 

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Presonality Check</title>
+    <link href="{{url_for('static', filename='css/result.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+</head>
+
+<body>
+    <div class="main">
+
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" id="one">
+                    <div class="blog" id="q"></div>
+                    <div class="isme_flex">
+                        <div class="flex_1">
+                            <div class="isme_dal">
+                                <img src="{{url_for('static', filename='img/page1.png')}}" alt="" srcset="">
+                            </div>
+                        </div>
+                        <div class="flex_2">
+                            <!-- {% if extrovert display this %} -->
+                            <div class="main_heading">
+                                <p>
+                                    Your are<br><span id="part1">Extrovert</span>
+                                </p>
+                            </div>
+                            <div class="uska_des">
+                                <p>
+                                <aside style="color: #ffbb00;">Strength</aside>: Extroverts are sociable and easily
+                                connect with others, making
+                                them great
+                                at networking and building relationships.
+                                </p>
+                                <p>
+                                <aside style="color: #ffbb00;">Weakness</aside>: Extroverts may struggle with alone
+                                time, dominate
+                                conversations, and find
+                                it difficult to focus in quiet environments.
+                                </p>
+                            </div>
+                            <!-- {% till here %} -->
+                            <!-- {%Else ager introvert display this%} -->
+                            <!-- <div class="main_heading">
+                                <p>
+                                    Your are<br><span id="part1">Introvert</span>
+                                </p>
+                            </div>
+                            <div class="uska_des">
+                                <p>
+                                    <aside style="color: #ffbb00;">Strength</aside>: Introverts are great listeners, reflective, and work well independently.
+                                </p>
+                                <p>
+                                    <aside style="color: #ffbb00;">Weakness</aside>: Introverts may struggle in highly social situations, find it challenging to speak up, and be perceived as distant by others.
+                                </p>
+                            </div> -->
+                            <!-- {%till here%} -->
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide" id="two">
+                    <div class="blog" id="w"></div>
+                    <div class="isme_flex">
+                        <div class="flex_1">
+                            <div class="isme_dal">
+                                <img src="{{url_for('static', filename='img/page2.png')}}" alt="" srcset="">
+                            </div>
+                        </div>
+                        <div class="flex_2">
+                            <!-- {% if sensor display this %} -->
+                            <div class="main_heading">
+                                <p>
+                                    Your are<br><span id="part2">Sensor</span>
+                                </p>
+                            </div>
+                            <div class="uska_des">
+                                <p>
+                                <aside style="color: #fc3a2e;">Strength</aside>: Sensor people are detail-oriented,
+                                practical, and
+                                action-oriented, which
+                                allows them to effectively navigate tangible situations.
+                                </p>
+                                <p>
+                                <aside style="color: #fc3a2e;">Weakness</aside>: Sensor people may struggle to think
+                                creatively or see the big
+                                picture,
+                                focusing too much on details and missing the larger context.
+                                </p>
+                            </div>
+                            <!-- {% till here %} -->
+                            <!-- {%Else ager intuitive display this%} -->
+                            <!-- <div class="main_heading">
+                                <p>
+                                    Your are<br><span id="part2">Intuitive</span>
+                                </p>
+                            </div>
+                            <div class="uska_des">
+                                <p>
+                                    <aside style="color: #fc3a2e;">Strength</aside>: Intuitive people are imaginative and visionary, making connections between seemingly unrelated ideas and often being creative and innovative problem solvers.
+                                </p>
+                                <p>
+                                    <aside style="color: #fc3a2e;">Weakness</aside>: Intuitive people may struggle to communicate their ideas effectively or to follow through on concrete plans, and may be prone to overthinking or second-guessing their instincts.
+                                </p>
+                            </div> -->
+                            <!-- {%till here%} -->
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide" id="three">
+                    <div class="blog" id="e"></div>
+                    <div class="isme_flex">
+                        <div class="flex_1">
+                            <div class="isme_dal">
+                                <img src="{{url_for('static', filename='img/page3.png')}}" alt="" srcset="">
+                            </div>
+                        </div>
+                        <div class="flex_2">
+                            <!-- {% if thinker display this %} -->
+                            <div class="main_heading">
+                                <p>
+                                    Your are<br><span id="part3">Thinker</span>
+                                </p>
+                            </div>
+                            <div class="uska_des">
+                                <p>
+                                <aside style="color: #ff9fde;">Strength</aside>: Thinker people tend to be logical and
+                                analytical, which allows
+                                them to make decisions based on objective reasoning and evidence. They are often great
+                                at problem-solving and can provide a rational perspective on complex issues.
+                                </p>
+                                <p>
+                                <aside style="color: #ff9fde;">Weakness</aside>: Thinker people may struggle with
+                                empathy or connecting
+                                emotionally with others, which can make them appear cold or detached. They may also
+                                prioritize logic over emotions, which can lead to disregarding people's feelings in
+                                certain situations.
+                                </p>
+                            </div>
+                            <!-- {% till here %} -->
+                            <!-- {%Else ager feeler display this%} -->
+                            <!-- <div class="main_heading">
+                                <p>
+                                    Your are<br><span id="part3">Feeler</span>
+                                </p>
+                            </div>
+                            <div class="uska_des">
+                                <p>
+                                    <aside style="color: #ff9fde;">Strength</aside>: Feeler people tend to be empathetic and compassionate, which allows them to connect emotionally with others and understand their feelings. They are often great at providing emotional support and creating a harmonious environment.
+                                </p>
+                                <p>
+                                    <aside style="color: #ff9fde;">Weakness</aside>: Feeler people may struggle with making objective decisions, as they prioritize emotions and personal values over logic and reason. They may also be perceived as overly sensitive or dramatic by others.
+                                </p>
+                            </div> -->
+                            <!-- {%till here%} -->
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide" id="four">
+                    <div class="blog" id="r"></div>
+                    <div class="isme_flex">
+                        <div class="flex_1">
+                            <div class="isme_dal">
+                                <img src="{{url_for('static', filename='img/page4.png')}}" alt="" srcset="">
+                            </div>
+                        </div>
+                        <div class="flex_2">
+                            <!-- {% if judger display this %} -->
+                            <div class="main_heading">
+                                <p>
+                                    Your are<br><span id="part4">Judger</span>
+                                </p>
+                            </div>
+                            <div class="uska_des">
+                                <p>
+                                <aside style="color: #549ccb;">Strength</aside>: Judger people tend to be organized and
+                                decisive, which allows
+                                them to effectively plan and manage tasks and projects. They are often great at setting
+                                goals and following through with them.
+                                </p>
+                                <p>
+                                <aside style="color: #549ccb;">Weakness</aside>: Judger people may struggle with
+                                flexibility and adaptability,
+                                as they may be resistant to change and find it difficult to adjust to unexpected
+                                situations. They may also be perceived as rigid or inflexible by others.
+                                </p>
+                            </div>
+                            <!-- {% till here %} -->
+                            <!-- {%Else ager precevier display this%} -->
+                            <!-- <div class="main_heading">
+                                <p>
+                                    Your are<br><span id="part4">Precevier</span>
+                                </p>
+                            </div>
+                            <div class="uska_des">
+                                <p>
+                                    <aside style="color: #549ccb;">Strength</aside>: Perceiver people tend to be flexible and adaptable, which allows them to adjust easily to changing situations and be open to new experiences. They are often great at improvising and thinking on their feet.
+                                </p>
+                                <p>
+                                    <aside style="color: #549ccb;">Weakness</aside>: Perceiver people may struggle with procrastination and time management, as they may find it difficult to prioritize tasks and may be easily distracted by new opportunities or experiences. They may also be perceived as disorganized or unreliable by others.
+                                </p>
+                            </div> -->
+                            <!-- {%till here%} -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            cssMode: true,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+            },
+            mousewheel: true,
+            keyboard: true,
+        });
+    </script>
+</body>
+
+</html>

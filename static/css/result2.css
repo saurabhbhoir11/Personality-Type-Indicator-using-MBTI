@@ -1,0 +1,35 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(190, 189, 189, 0.562);
+  }
+  
+  .main {
+    width: 60vw;
+    height: 90vh;
+    background-color: white;
+    text-align: center;
+  }
+  
+  .your{
+    padding: 10px;
+    font-size: 3em;
+  }
+  .main_personality{
+    padding-top: 5px;
+    font-size: 5em;
+    color: blue;
+  }
+
+  .strenght{
+    padding: 20px;
+    font-size: 20px;
+  }

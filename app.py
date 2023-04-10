@@ -35,7 +35,7 @@ app.config['MYSQL_DB'] = 'mbti'
 
 mysql = MySQL(app)
 
-limit = 300
+limit = 180
 # load models
 # mod1 = joblib.load('IE1.sav')
 # mod2 = joblib.load('NS1.sav')
@@ -171,26 +171,26 @@ def preprocess(tweets):
     nltk.download('wordnet')
     tweets = " ".join([lemmatizer.lemmatize(w) for w in tweets.split(' ')])
 
-    df = pd.read_csv('data.csv')
-    print(df.shape)
-    print(df.tail(1))
-    new_row = pd.DataFrame({'posts': [tweets]})
-    df = pd.concat([df, new_row], ignore_index=True)
-    print(df.shape)
-    print(df.tail(1))
-    post_list = []
-    for i, j in df.posts.iteritems():
-        post_list.append(j)
-    # tweets = [tweets]
+#    df = pd.read_csv('data.csv')
+ #   print(df.shape)
+  #  print(df.tail(1))
+   # new_row = pd.DataFrame({'posts': [tweets]})
+    #df = pd.concat([df, new_row], ignore_index=True)
+    #print(df.shape)
+    #print(df.tail(1))
+    #post_list = []
+    #for i, j in df.posts.iteritems():
+   #     post_list.append(j)
+    tweets = [tweets]
     vector = CountVectorizer(stop_words='english', max_features=1500)
-    features = vector.fit_transform(post_list)
+    features = vector.fit_transform(tweets)
     # print(finalfeatures.shape)
 
     # tf-idf to weigh the importance of words(features) across all posts and select more relevent features
     transform = TfidfTransformer()
     finalFeatures = transform.fit_transform(features).toarray()
-    out = [finalFeatures[8674]]
-    # out = finalFeatures
+    #out = [finalFeatures[8674]]
+    out = finalFeatures
     return out
 
 

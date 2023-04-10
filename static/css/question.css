@@ -1,0 +1,45 @@
+
+      /* Style the label elements */
+      body{
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      label {
+        margin-bottom: 10px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease-in-out;
+        /* width: 2%; */
+      }
+      .part1{
+        display:flex;
+        justify-content: space-between;
+      }
+
+      label:hover {
+        background-color: #f2f2f2;
+      }
+      label.selected {
+        background-color: #4caf50;
+        color: #fff;
+        border-color: #4caf50;
+      }
+      
+      /* Animate the selected label */
+      @keyframes selected {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.2);
+        }
+        100% {
+          transform: scale(1);
+        }
+    }
+

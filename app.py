@@ -14,7 +14,6 @@ nltk.download('wordnet')
 nltk.download('omw-1.4')
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer, TfidfVectorizer
 import re
-import joblib
 
 '''import tweepy 
 import configparser'''
@@ -35,7 +34,7 @@ app.config['MYSQL_DB'] = 'mbti'
 
 mysql = MySQL(app)
 
-limit = 180
+limit = 300
 # load models
 # mod1 = joblib.load('IE1.sav')
 # mod2 = joblib.load('NS1.sav')
@@ -114,7 +113,7 @@ def getTweets():
             adv, disadv = getAdvantages_Disadvantages(type)
             # print(tweets)
             pr = '<h1>' + type + '</hi> <br> <h1>' + twitter + '</h1> ' '''<br> <h1>' + adv + '<br>' + disadv + '</hi>' '''
-            #return render_template('result.html', type, adv, disadv)
+            # return render_template('result.html', type, adv, disadv)
             return pr
         return redirect(url_for('home'))
 
@@ -171,26 +170,26 @@ def preprocess(tweets):
     nltk.download('wordnet')
     tweets = " ".join([lemmatizer.lemmatize(w) for w in tweets.split(' ')])
 
-#    df = pd.read_csv('data.csv')
- #   print(df.shape)
-  #  print(df.tail(1))
-   # new_row = pd.DataFrame({'posts': [tweets]})
-    #df = pd.concat([df, new_row], ignore_index=True)
-    #print(df.shape)
-    #print(df.tail(1))
-    #post_list = []
-    #for i, j in df.posts.iteritems():
-   #     post_list.append(j)
-    tweets = [tweets]
+    df = pd.read_csv('data.csv')
+    print(df.shape)
+    print(df.tail(1))
+    new_row = pd.DataFrame({'posts': [tweets]})
+    df = pd.concat([df, new_row], ignore_index=True)
+    print(df.shape)
+    print(df.tail(1))
+    post_list = []
+    for i, j in df.posts.iteritems():
+         post_list.append(j)
+    #tweets = [tweets]
     vector = CountVectorizer(stop_words='english', max_features=1500)
-    features = vector.fit_transform(tweets)
+    features = vector.fit_transform(post_list)
     # print(finalfeatures.shape)
 
     # tf-idf to weigh the importance of words(features) across all posts and select more relevent features
     transform = TfidfTransformer()
     finalFeatures = transform.fit_transform(features).toarray()
-    #out = [finalFeatures[8674]]
-    out = finalFeatures
+    out = [finalFeatures[5325]]
+    #out = finalFeatures
     return out
 
 

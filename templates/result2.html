@@ -18,17 +18,20 @@
             </p>
         </div>
         <div class="main_personality">
-            <p>INSJ</p>
+            <p>{{type}}</p>
         </div>
         <div class="strenght">
-            <p>Strenght:-<br> Lorem ipsum dolor sit amet consectetur<br> adipisicing elit. Incidunt voluptate quod sapiente
-                fugiat reiciendis eum laboriosam<br> explicabo officia aliquid facilis, nostrum<br> distinctio ipsum laudantium,
-                rerum ratione sit suscipit culpa recusandae optio excepturi! Perspiciatis, a?</p>
+            <p>Strenght:-</p>
+            {% for advantage in advantages %}
+            <br> {{advantage}}
+        {% endfor %}
         </div>
         <div class="strenght">
-            <p>Weakness:-<br> Lorem ipsum dolor sit amet consectetur<br> adipisicing elit. Incidunt voluptate quod sapiente
-                fugiat reiciendis eum laboriosam<br> explicabo officia aliquid facilis, nostrum<br> distinctio ipsum laudantium,
-                rerum ratione sit suscipit culpa recusandae optio excepturi! Perspiciatis, a?</p>
+            <p>Weakness:-</p>
+            {% for disadvantage in disadvantages %}
+            <br> {{disadvantage}}
+            {% endfor %}
+
         </div>
     </div>
 </body>

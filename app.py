@@ -1,3 +1,5 @@
+import re
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer, TfidfVectorizer
 from flask import *
 from flask_mysqldb import *
 import mysql.connector
@@ -12,8 +14,6 @@ import pickle
 nltk.download('stopwords')
 nltk.download('wordnet')
 nltk.download('omw-1.4')
-from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer, TfidfVectorizer
-import re
 
 '''import tweepy 
 import configparser'''
@@ -41,13 +41,13 @@ limit = 300
 # mod3 = joblib.load('TF1.sav')
 # mod4 = joblib.load('JP1.sav')
 
-with open('log_modelIE.pkl', 'rb') as f:
+with open('modelIE.pkl', 'rb') as f:
     loaded_modelIE = pickle.load(f)
-with open('log_modelNS.pkl', 'rb') as f:
+with open('modelNS.pkl', 'rb') as f:
     loaded_modelNS = pickle.load(f)
-with open('log_modelTF.pkl', 'rb') as f:
+with open('modelTF.pkl', 'rb') as f:
     loaded_modelTF = pickle.load(f)
-with open('log_modelJP.pkl', 'rb') as f:
+with open('modelJP.pkl', 'rb') as f:
     loaded_modelJP = pickle.load(f)
 
 
@@ -73,7 +73,8 @@ def login():
         username = request.form['username']
         password = request.form['password']
         cursor = mysql.connection.cursor()
-        cursor.execute('SELECT * FROM users WHERE username = %s AND password = %s', (username, password))
+        cursor.execute(
+            'SELECT * FROM users WHERE username = %s AND password = %s', (username, password))
         user = cursor.fetchone()
         cursor.close()
         if user:
@@ -112,9 +113,10 @@ def getTweets():
             type = predict(tweets)
             adv, disadv = getAdvantages_Disadvantages(type)
             # print(tweets)
-            pr = '<h1>' + type + '</hi> <br> <h1>' + twitter + '</h1> ' '''<br> <h1>' + adv + '<br>' + disadv + '</hi>' '''
+            pr = '<h1>' + type + '</hi> <br> <h1>' + twitter + \
+                '</h1> ' '''<br> <h1>' + adv + '<br>' + disadv + '</hi>' '''
             # return render_template('result.html', type, adv, disadv)
-            return render_template('result2.html', type = type, advantages = adv, disadvantages = disadv)
+            return render_template('result2.html', type=type, advantages=adv, disadvantages=disadv)
         return redirect(url_for('home'))
 
     return render_template('getTweets.html')
@@ -134,7 +136,8 @@ def preprocess(tweets):
        It returns the processed textual data list as output.'''
 
     # remove url links
-    pattern = re.compile(r'https?://[a-zA-Z0-9./-]*/[a-zA-Z0-9?=_.]*[_0-9.a-zA-Z/-]*')
+    pattern = re.compile(
+        r'https?://[a-zA-Z0-9./-]*/[a-zA-Z0-9?=_.]*[_0-9.a-zA-Z/-]*')
     tweets = re.sub(pattern, ' ', tweets)
 
     pattern2 = re.compile(r'https?://[a-zA-Z0-9./-]*')
@@ -179,8 +182,8 @@ def preprocess(tweets):
     print(df.tail(1))
     post_list = []
     for i, j in df.posts.iteritems():
-         post_list.append(j)
-    #tweets = [tweets]
+        post_list.append(j)
+    # tweets = [tweets]
     vector = CountVectorizer(stop_words='english', max_features=1500)
     features = vector.fit_transform(post_list)
     # print(finalfeatures.shape)
@@ -189,7 +192,7 @@ def preprocess(tweets):
     transform = TfidfTransformer()
     finalFeatures = transform.fit_transform(features).toarray()
     out = [finalFeatures[5325]]
-    #out = finalFeatures
+    # out = finalFeatures
     return out
 
 
@@ -420,6 +423,32 @@ def getAdvantages_Disadvantages(type):
     type_advantage = advanteges[type]
     type_disadvantage = disadvantages[type]
     return type_advantage, type_disadvantage
+
+
+def getQuestions(n):
+    questionlist_IE = ["Do you prefer spending time alone or with other people?",    "Are you energized by socializing with others, or do you find it draining?",    "Do you enjoy being the center of attention in a group, or do you prefer to blend in?",    "Are you comfortable approaching strangers and starting conversations, or do you tend to keep to yourself?",    "Do you tend to speak before thinking, or do you think before you speak?",    "Do you enjoy brainstorming and collaborating with others, or do you prefer to work independently?",    "Do you prefer to process your thoughts internally, or do you prefer to talk them out with others?",    "Are you more interested in meeting new people and trying new things, or do you prefer the comfort of familiar routines and experiences?",
+                       "Do you find it easy to make friends and form new social connections, or do you find it challenging?",    "Do you feel energized and motivated when surrounded by a lot of activity and noise, or do you prefer quieter, more peaceful environments?",    "Do you prefer to be the one making decisions and taking charge, or do you prefer to let others take the lead?",    "Do you feel comfortable sharing your personal thoughts and feelings with others, or do you keep them to yourself?",    "Are you drawn to high-stress, high-pressure environments, or do you prefer low-key, relaxed settings?",    "Do you prefer to communicate through spoken language, or do you prefer to communicate through writing and other forms of media?",    "Do you prefer to have a few close friends, or do you enjoy having a large social circle?"]
+    questionlist_NS = ["Do you tend to focus more on the present moment, or do you often think about future possibilities?",    "Do you enjoy abstract thinking and theoretical ideas, or do you prefer practical, concrete information?",    "Are you drawn to creative pursuits like art, music, and writing, or do you prefer more analytical or technical pursuits?",    "Do you tend to trust your gut instincts, or do you rely more on tangible evidence and information?",    "Are you more interested in exploring the meaning behind things, or do you prefer to take things at face value?",    "Do you often find yourself daydreaming or lost in thought, or do you prefer to stay focused on the task at hand?",    "Do you enjoy brainstorming and generating new ideas, or do you prefer to work with established systems and structures?",    "Are you more interested in exploring abstract concepts and theories, or do you prefer to learn about practical skills and techniques?",
+                       "Do you find it easy to make connections between seemingly unrelated ideas, or do you prefer to work with more linear and logical thinking?",    "Do you prefer to plan and organize your time and activities, or do you prefer to go with the flow and adapt to changing circumstances?",    "Do you enjoy puzzles and problem-solving, or do you find them frustrating?",    "Are you more interested in exploring the potential of new technologies and ideas, or do you prefer to work with tried-and-true methods?",    "Do you find yourself drawn to unconventional or offbeat ideas, or do you prefer to stick with more traditional approaches?",    "Are you more interested in exploring the big picture and overarching themes, or do you prefer to focus on details and specifics?",    "Do you enjoy discussing abstract concepts and ideas with others, or do you prefer more concrete and practical discussions?"]
+    questionlist_TF = ["Do you prioritize logic and reason over emotions and personal values when making decisions?",    "Do you prefer to analyze problems and situations objectively, or do you rely more on your intuition and gut feelings?",    "Are you comfortable with conflict and confrontation, or do you prefer to avoid it whenever possible?",    "Do you tend to express your opinions and thoughts in a direct and straightforward manner, or do you use more tact and diplomacy?",    "Do you value accuracy and precision in your work and communication, or do you prioritize creativity and expression?",    "Do you prefer to make decisions based on empirical evidence and data, or do you rely more on your personal beliefs and values?",    "Are you more interested in finding solutions to problems, or do you prefer to explore and analyze the underlying causes and motivations?",    "Do you find it easy to detach yourself emotionally from a situation in order to analyze it objectively, or do you find yourself getting caught up in your own feelings and opinions?",
+                       "Do you enjoy debating and arguing, or do you find it uncomfortable and stressful?",    "Do you prioritize efficiency and productivity over interpersonal relationships and team dynamics, or do you value teamwork and collaboration more?",    "Do you prefer to work with systems and structures, or do you enjoy exploring new and unconventional ideas and approaches?",    "Are you more interested in exploring and understanding the workings of the natural world, or do you prefer to focus on human behavior and psychology?",    "Do you find yourself more drawn to quantitative data and analysis, or do you prefer qualitative research and analysis?",    "Do you value rationality and objectivity above all else, or do you prioritize empathy and compassion in your interactions with others?",    "Do you prefer to make decisions based on your own personal experiences and intuition, or do you look to established authorities and experts for guidance?"]
+    questionlist_JP = [
+        "Do you prefer to have a clear plan and timeline for your activities and projects, or do you prefer to keep things open-ended and flexible?",
+        "Are you comfortable with sudden changes in your plans and routines, or do you prefer to stick to a consistent schedule?",
+        "Do you prefer to work on one task at a time, or do you like to juggle multiple tasks and projects simultaneously?",
+        "Are you more comfortable with well-defined goals and objectives, or do you prefer to explore and experiment with new ideas and possibilities?",
+        "Do you prefer to work with established rules and guidelines, or do you prefer to create your own rules and guidelines as you go?",
+        "Do you enjoy routine and predictability in your life, or do you prefer to seek out new and exciting experiences?",
+        "Do you prefer to work in a structured and organized environment, or do you thrive in a more chaotic and unpredictable setting?",
+        "Do you find it easy to make decisions quickly and confidently, or do you prefer to take your time and consider all options before making a choice?",
+        "Do you prefer to focus on short-term goals and accomplishments, or do you prioritize long-term vision and planning?",
+        "Do you find yourself constantly making to-do lists and prioritizing tasks, or do you prefer to take a more spontaneous and intuitive approach to your work and activities?",
+        "Do you enjoy analyzing data and information in order to make decisions, or do you prefer to use your intuition and gut feelings to guide you?",
+        "Do you prefer to work independently and take control of projects, or do you enjoy collaborating and working in a team environment?",
+        "Do you enjoy structure and routine in your social life, or do you prefer to go with the flow and see where the night takes you?",
+        "Do you prefer to stick to familiar and comfortable routines and habits, or do you enjoy shaking things up and trying new things?",
+        "Do you feel more comfortable and productive when you have a clear plan and deadline, or do you prefer to work at your own pace and take as long as you need to complete a task?"
+    ]
 
 
 def check_username(username):

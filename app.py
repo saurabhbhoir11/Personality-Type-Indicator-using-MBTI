@@ -114,7 +114,7 @@ def getTweets():
             # print(tweets)
             pr = '<h1>' + type + '</hi> <br> <h1>' + twitter + '</h1> ' '''<br> <h1>' + adv + '<br>' + disadv + '</hi>' '''
             # return render_template('result.html', type, adv, disadv)
-            return pr
+            return render_template('result2.html', type = type, advantages = adv, disadvantages = disadv)
         return redirect(url_for('home'))
 
     return render_template('getTweets.html')

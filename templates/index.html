@@ -109,7 +109,14 @@
           </div>
 
           <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
-            <img src="{{url_for('static', filename='img/about.jpg')}}" class="img-fluid" alt="">
+            <div class="swiper mySwiper">
+              <div class="swiper-wrapper">
+                  <div class="swiper-slide"><img src="evi.jpg" alt="" srcset=""></div>
+                  <div class="swiper-slide"><img src="svi.jpg" alt="" srcset=""></div>
+                  <div class="swiper-slide"><img src="tvf.jpg" alt="" srcset=""></div>
+                  <div class="swiper-slide"><img src="jvp.jpg" alt="" srcset=""></div>
+              </div>
+          </div>
           </div>
 
         </div>
@@ -409,6 +416,15 @@
 
   <!-- Template Main JS File -->
   <script src="{{url_for('static', filename='js/main.js')}}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+      var swiper = new Swiper(".mySwiper", {
+          effect: "cards",
+          grabCursor: true,
+      });
+  </script>
 
 </body>
 

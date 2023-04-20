@@ -125,18 +125,26 @@ def getTweets():
 
 
 @app.route('/takeTest')
-@app.route('/takeTest')
 def takeTest():
     count = int(session.get('count', 0))
-    questions = getQuestions(count)
+    questions, n = getQuestions(count)
+    n1 = n + 1
+    flag = int(session.get('flag', 0))
+    data = []
     print(questions)
     if request.method == 'GET':
+        
         count += 1  # Increment count by 1
         session['count'] = count
         if count == 10:
-            return redirect(url_for('home'))
+            session.clear()
+            return redirect('testResult')
         return render_template('index2.html', questions = questions)
     return render_template('index2.html', questions = questions)
+
+@app.route('/testResult')
+def testResult():
+    return render_template('result.html')
 
 
 
@@ -508,7 +516,7 @@ def getQuestions(n):
         temp = questionlist[n]
         curr_list.append(temp)
         n += 1
-    return curr_list
+    return curr_list, n
 
 
 

@@ -1,4 +1,4 @@
-import time 
+import time
 from random import randint
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -22,17 +22,11 @@ try:
         (By.CSS_SELECTOR, '[data-testid="tweet"]')))
 except WebDriverException:
     print("Tweets did not appear!, Try setting headless=False to see what is happening")
-        
-
-
-
 
 tweets = driver.find_elements(By.CSS_SELECTOR, '[data-testid="tweet"]')
 
 for tweet in tweets:
-    
-    tweet_text = tweet.find_element(By.CSS_SELECTOR,'div[data-testid="tweetText"]').text
-    
-    
+    tweet_text = tweet.find_element(By.CSS_SELECTOR, 'div[data-testid="tweetText"]').text
+
     print(tweet_text)
     # print("--------------")

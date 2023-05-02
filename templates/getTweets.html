@@ -1,36 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>Twitter ID Input</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'home.css') }}">
-
-</head>
-<body>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 mx-auto">
-        <div class="card">
-          <h3 class="text-center mb-4">Enter your Twitter ID</h3>
-          <form action="" method="POST">
-            <div class="form-group">
-              <label for="twitterId">Twitter ID:</label>
-              <input type="text" class="form-control" id="twitterId" name="twitter_id" required>
+  <head>
+    <title>Twitter ID Input</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename = 'home.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="card">
+            <h3 class="text-center mb-4">Enter your Twitter ID</h3>
+            <form action="" method="POST">
+              <div class="form-group">
+                <label for="twitterId">Twitter ID:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="twitterId"
+                  name="twitter_id"
+                  required
+                />
+              </div>
+              <button
+                style="width: 100%"
+                type="button"
+                class="button"
+                onclick="this.classList.toggle('button--loading')"
+              >
+                <span class="button__text">Check</span>
+              </button>
+            </form>
+            <div id="twitterIdOutput">
+              <p class="output-text">Your Twitter ID is:</p>
+              <p id="twitterIdValue" class="output-text"></p>
             </div>
-            <button type="submit" class="btn btn-primary btn-block mt-4">Submit</button>
-          </form>
-          <div id="twitterIdOutput">
-            <p class="output-text">Your Twitter ID is:</p>
-            <p id="twitterIdValue" class="output-text"></p>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

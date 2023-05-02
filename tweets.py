@@ -1,26 +1,41 @@
-import snscrape.modules.twitter as sntwitter
-import pandas as pd
+import tweepy
 
-query = "valorant"
-tweets = []
-limit = 100000
+# Set your Twitter API credentials
+consumer_key = 'dt1HAxCviNeXuuYjhbHZUR1XA'
+consumer_secret = 'sAjT1h6Z4c3HvDOlFaZBnUXBxq2BL7hDYOUjS8UdwFpxjlXX1x'
+access_token = '1180012555395325952-zjrHGesYkCLcIH7kGGugZZQDhkgr6N'
+access_token_secret = 'EsWKP6BEwLsecG7FEcduCW19kYQwJPkB9QhDOJFNkekhF'
 
+# Authenticate to Twitter
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
 
-for tweet in sntwitter.TwitterSearchScraper(query=query).get_items():
-    
-    # print(vars(tweet))
-    # break
-    if len(tweets) == limit:
-        break
-    else:
-        tweets.append([tweet.date, tweet.rawContent])
-        
-df = pd.DataFrame(tweets, columns=['Date', 'Tweet'])
-print(df)
+# Create API object
+api = tweepy.API(auth)
+
+# Define the username whose tweets you want to scrape
+username = "elonmusk"
+
+# Get user object
+user = api.get_user(screen_name=username)
+
+# Get tweets from user's timeline
+tweets = api.user_timeline(screen_name=username, count=1, tweet_mode="extended")
+
+# Loop through the tweets and access their attributes
+for tweet in tweets:
+    print("Username:", tweet.user.screen_name)
+    print("Text:", tweet.full_text)
+    print("Date:", tweet.created_at)
+    print("Likes:", tweet.favorite_count)
+    print("Retweets:", tweet.retweet_count)
+    print("Replies:", tweet.reply_count)
+    print("------------------")
+
 
 # to save to csv
 # df.to_csv('tweets.csv')
-it = int(session.get('it', 0))
+'''it = int(session.get('it', 0))
         ex = int(session.get('es', 0))
         nt = int(session.get('nt', 0))
         se = int(session.get('se', 0))
@@ -82,4 +97,4 @@ it = int(session.get('it', 0))
     print(th)
     print(fe)
     print(ju)
-    print(pe)
+    print(pe)'''

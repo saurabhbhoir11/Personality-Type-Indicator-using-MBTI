@@ -1,14 +1,10 @@
 import re
-from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer, TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from flask import *
-from flask_mysqldb import *
-import mysql.connector
 import snscrape.modules.twitter as sntwitter
 import pandas as pd
 import nltk
 from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
-import numpy as np
 import pickle
 
 nltk.download('stopwords')
@@ -21,18 +17,12 @@ import configparser'''
 app = Flask(__name__)
 app.secret_key = "mykey"
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '123456'
-app.config['MYSQL_DB'] = 'mbti'
-
 # Twitter API credentials
 # consumer_key = ""
 # consumer_secret = ""
 # access_token = ""
 # access_token_secret = ""
 
-mysql = MySQL(app)
 
 limit = 250
 # load models
@@ -50,7 +40,7 @@ with open('modelTF.pkl', 'rb') as f:
 with open('modelJP.pkl', 'rb') as f:
     loaded_modelJP = pickle.load(f)
 
-
+'''
 @app.route("/signup", methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -83,12 +73,12 @@ def login():
         else:
             return render_template('login.html', message='Invalid email or password', flag=1)
     return render_template("login.html", flag=0)
+'''
 
 
 @app.route('/')
 def home():
     session.clear()
-    session['count'] = 0
     return render_template('index.html')
 
 
@@ -96,10 +86,6 @@ def home():
 def getTweets():
     if request.method == 'POST':
         twitter = request.form['twitter_id']
-        cursor = mysql.connection.cursor()
-        cursor.execute('insert into tweets values (%s)', (twitter,))
-        mysql.connection.commit()
-        cursor.close()
         test = check_username(twitter)
         if test:
             query = '(from:' + twitter + ') lang:en'
@@ -116,7 +102,7 @@ def getTweets():
             adv, disadv = getAdvantages_Disadvantages(type)
             # print(tweets)
             pr = '<h1>' + type + '</hi> <br> <h1>' + twitter + \
-                '</h1> ' '''<br> <h1>' + adv + '<br>' + disadv + '</hi>' '''
+                 '</h1> ' '''<br> <h1>' + adv + '<br>' + disadv + '</hi>' '''
             # return render_template('result.html', type, adv, disadv)
             return render_template('result2.html', type=type, advantages=adv, disadvantages=disadv)
         return redirect(url_for('home'))
@@ -124,28 +110,89 @@ def getTweets():
     return render_template('getTweets.html')
 
 
-@app.route('/takeTest')
+@app.route('/takeTest', methods=['GET', 'POST'])
 def takeTest():
     count = int(session.get('count', 0))
     questions, n = getQuestions(count)
-    n1 = n + 1
-    flag = int(session.get('flag', 0))
-    data = []
-    print(questions)
-    if request.method == 'GET':
-        
+    print('source n is ' + str(n))
+    if count < 8:
+        next = 'Next'
+    else:
+        next = 'Submit'
+    if request.method == 'POST':
+        score = []
         count += 1  # Increment count by 1
         session['count'] = count
+        for i in range(1, 7):
+            name = 'radio' + str(i)
+            val = request.form[name]
+            score.append(int(val))
+        processTest(score, n)
+        print('the length of score is ' + str(len(score)))
         if count == 10:
-            session.clear()
+            print("hello")
             return redirect('testResult')
-        return render_template('index2.html', questions = questions)
-    return render_template('index2.html', questions = questions)
+        return render_template('index2.html', questions=questions, next=next)
+    return render_template('index2.html', questions=questions, next=next)
+
 
 @app.route('/testResult')
 def testResult():
+    type = getType()
+    print(type)
     return render_template('result.html')
 
+
+def processTest(score, n):
+    n = n
+    score = score
+    print('n1 is ' + str(n))
+    i = int(session.get('i', 0))
+    e = int(session.get('e', 0))
+    n = int(session.get('n', 0))
+    s = int(session.get('s', 0))
+    t = int(session.get('t', 0))
+    f = int(session.get('f', 0))
+    j = int(session.get('j', 0))
+    p = int(session.get('p', 0))
+    flag = int(session.get('flag', 0))
+    for sc in range(0,6):
+        print('the value of sc is ' + str(sc))
+        temp = n%15
+        if temp == 0:
+            flag += 1
+        n += 1
+        if flag == 0:
+            if score[sc] < 0:
+                i += abs(sc)
+                session['i'] = i
+            else:
+                e += abs(sc)
+                session['e'] = e
+        elif flag == 1:
+            if sc < 0:
+                s += abs(sc)
+                session['s'] = s
+            else:
+                n += abs(sc)
+                session['n'] = n
+        elif flag == 2:
+            if sc < 0:
+                f += abs(sc)
+                session['f'] = f
+            else:
+                t += abs(sc)
+                session['t'] = t
+        elif flag == 3:
+            if sc < 0:
+                p += abs(sc)
+                session['p'] = p
+            else:
+                j += abs(sc)
+                session['j'] = j
+        session['flag'] = flag
+        print('n2 is ' + str(n))
+        print('flag is ' + str(flag))
 
 
 def preprocess(tweets):
@@ -215,6 +262,43 @@ def preprocess(tweets):
     out = [finalFeatures[5325]]
     # out = finalFeatures
     return out
+
+
+def getType():
+    i = int(session.get('i', 0))
+    print("i = " + str(i))
+    e = int(session.get('e', 0))
+    print("e = " + str(e))
+    n = int(session.get('n', 0))
+    print("n = " + str(n))
+    s = int(session.get('s', 0))
+    print("s = " + str(s))
+    t = int(session.get('t', 0))
+    print("t = " + str(t))
+    f = int(session.get('f', 0))
+    print("f = " + str(f))
+    j = int(session.get('j', 0))
+    print("j = " + str(j))
+    p = int(session.get('p', 0))
+    print("p = " + str(p))
+    type = ''
+    if i > e:
+        type += 'I'
+    else:
+        type += 'E'
+    if n > s:
+        type += 'N'
+    else:
+        type += 'S'
+    if t > f:
+        type += 'T'
+    else:
+        type += 'F'
+    if j > p:
+        type += 'J'
+    else:
+        type += 'P'
+    return type
 
 
 def predict(tweets):
@@ -446,6 +530,33 @@ def getAdvantages_Disadvantages(type):
     return type_advantage, type_disadvantage
 
 
+def getStrength_Weakness(type):
+    strength = []
+    weakness = []
+    allStrengths = dict(
+        I='Introverts are great listeners, reflective, and work well independently.',
+        E='Extroverts are sociable and easily connect with others, making them great at networking and building relationships.',
+        N='Intuitive people are imaginative and visionary, making connections between seemingly unrelated ideas and often being creative and innovative problem solvers.',
+        S=' Sensor people are detail-oriented, practical, and action-oriented, which allows them to effectively navigate tangible situations.',
+        T='Thinker people tend to be logical and analytical, which allows them to make decisions based on objective reasoning and evidence. They are often great at problem-solving and can provide a rational perspective on complex issues.',
+        F='Feeler people tend to be empathetic and compassionate, which allows them to connect emotionally with others and understand their feelings. They are often great at providing emotional support and creating a harmonious environment.',
+        J='Judger people tend to be organized and decisive, which allows them to effectively plan and manage tasks and projects. They are often great at setting goals and following through with them.',
+        P='Perceiver people tend to be flexible and adaptable, which allows them to adjust easily to changing situations and be open to new experiences. They are often great at improvising and thinking on their feet.')
+    allWeaknesses = dict(
+        I='Introverts may struggle in highly social situations, find it challenging to speak up, and be perceived as distant by others.',
+        E='Extroverts may struggle with alone time, dominate conversations, and find it difficult to focus in quiet environments.',
+        N='Intuitive people may struggle to communicate their ideas effectively or to follow through on concrete plans, and may be prone to overthinking or second-guessing their instincts.',
+        S='Sensor people may struggle to think creatively or see the big picture, focusing too much on details and missing the larger context.',
+        T='Thinker people may struggle with empathy or connecting emotionally with others, which can make them appear cold or detached. They may also prioritize logic over emotions, which can lead to disregarding people\'s feelings in certain situations.',
+        F='Feeler people may struggle with making objective decisions, as they prioritize emotions and personal values over logic and reason. They may also be perceived as overly sensitive or dramatic by others.',
+        J='Judger people may struggle with flexibility and adaptability, as they may be resistant to change and find it difficult to adjust to unexpected situations. They may also be perceived as rigid or inflexible by others.',
+        P='Perceiver people may struggle with procrastination and time management, as they may find it difficult to prioritize tasks and may be easily distracted by new opportunities or experiences. They may also be perceived as disorganized or unreliable by others.')
+    for i in type:
+        strength.append(allStrengths[i])
+        weakness.append(allWeaknesses[i])
+    return strength, weakness
+
+
 def getQuestions(n):
     questionlist = [
         "Do you prefer spending time alone or with other people?",
@@ -510,15 +621,13 @@ def getQuestions(n):
         "Do you feel more comfortable and productive when you have a clear plan and deadline, or do you prefer to work at your own pace and take as long as you need to complete a task?"
     ]
     curr_list = []
-    n = 6*n
+    n = 6 * n
     n2 = n + 6
     while n < n2:
         temp = questionlist[n]
         curr_list.append(temp)
         n += 1
     return curr_list, n
-
-
 
 
 def check_username(username):

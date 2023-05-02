@@ -30,4 +30,4 @@ run = client.actor("quacker/twitter-scraper").call(run_input=run_input)
 
 # Fetch and print actor results from the run's dataset (if there are any)
 for item in client.dataset(run["defaultDatasetId"]).iterate_items():
-    print(item)
+    print(item["full_text"])

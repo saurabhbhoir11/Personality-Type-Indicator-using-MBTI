@@ -10,7 +10,7 @@ handle = input("Enter a Twitter handle to scrape: ")
 run_input = {
     "handle": [handle],
     "mode": "own",
-    "tweetsDesired": 5,
+    "tweetsDesired": 200,
     "searchMode": "top",
     "profilesDesired": 1,
     "relativeToDate": "",
@@ -34,7 +34,7 @@ tweets = ''
 
 # Fetch and concatenate actor results from the run's dataset (if there are any)
 for item in client.dataset(run["defaultDatasetId"]).iterate_items():
-    tweets += str(item["full_text"])
+    tweets += format(item["full_text"])
 
 # Print the final concatenated string
 print(tweets)

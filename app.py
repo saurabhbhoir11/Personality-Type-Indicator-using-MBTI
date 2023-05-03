@@ -1,12 +1,12 @@
 import re
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from flask import *
-import snscrape.modules.twitter as sntwitter
 import pandas as pd
 import nltk
 from nltk.corpus import stopwords
 import pickle
 from apify_client import ApifyClient
+from langdetect import detect
 
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -89,7 +89,9 @@ def home():
 def getTweets():
     if request.method == 'POST':
         twitter = request.form['twitter_id']
-        test = check_username(twitter)
+        twitter = str(twitter)
+        # test = check_username(twitter)
+        test = True
         if test:
             # Initialize the ApifyClient with your API token
             client = ApifyClient("apify_api_wjt7aOzxFZu7Ca4aVaYr2z4m6iX1rg0A0qfF")
@@ -98,18 +100,18 @@ def getTweets():
             run_input = {
                 "handle": [twitter],
                 "mode": "own",
-                "tweetsDesired": limit,
+                "tweetsDesired": 200,
                 "searchMode": "top",
-                "profilesDesired": 0,
+                "profilesDesired": 1,
                 "relativeToDate": "",
                 "relativeFromDate": "",
                 "proxyConfig": {"useApifyProxy": True},
                 "extendOutputFunction": """async ({ data, item, page, request, customData, Apify }) => {
-                  return item;
-                }""",
+              return item;
+            }""",
                 "extendScraperFunction": """async ({ page, request, addSearch, addProfile, _, addThread, addEvent, customData, Apify, signal, label }) => {
-                  await addSearch(`from:${request.input.handle[0]}`, { limit: request.input.tweetsDesired });
-                }""",
+
+            }""",
                 "customData": {},
                 "handlePageTimeoutSecs": 500,
                 "maxRequestRetries": 6,
@@ -122,15 +124,16 @@ def getTweets():
 
             # Fetch and concatenate actor results from the run's dataset (if there are any)
             for item in client.dataset(run["defaultDatasetId"]).iterate_items():
-                tweets += str(item["full_text"])
-
+                if is_english(item["full_text"]):
+                    tweets = tweets + format(item["full_text"]) + ' '
             tweets = preprocess(tweets)
             type = predict(tweets)
+            fullForm = getFullForm(type)
             adv, disadv = getAdvantages_Disadvantages(type)
 
             # Construct the HTML response string
             pr = f'<h1>{type}</h1><br><h1>{twitter}</h1><br><h1>{adv}<br>{disadv}</h1>'
-            return render_template('result2.html', type=type, advantages=adv, disadvantages=disadv)
+            return render_template('result2.html', type=type, advantages=adv, disadvantages=disadv, fullForm=fullForm)
 
         return redirect(url_for('home'))
 
@@ -240,7 +243,6 @@ def preprocess(tweets):
     tweets = re.sub(pattern, ' ', tweets)
     pattern = re.compile(r'[_+]')
     tweets = re.sub(pattern, ' ', tweets)
-
     # removing extra spaces from texts.
 
     pattern = re.compile('\s+')
@@ -667,15 +669,62 @@ def getQuestions(n):
     return curr_list, n
 
 
+def is_english(text):
+    try:
+        lang = detect(text)
+        if lang == 'en':
+            return True
+        else:
+            return False
+    except:
+        return False
+
+
+# def check_username(username):
+#    # Format the username with the @ symbol if it doesn't already have it
+#    if username[0] != '@':
+#        username = '@' + username
+#    # Use snscrape to search for the Twitter user with the given username
+#    query = f'{username} since_id:1'
+#    tweets = sntwitter.TwitterSearchScraper(query).get_items()
+#    # Check if any tweets were returned
+#    return any(True for tweet in tweets)
+
+
 def check_username(username):
-    # Format the username with the @ symbol if it doesn't already have it
-    if username[0] != '@':
-        username = '@' + username
-    # Use snscrape to search for the Twitter user with the given username
-    query = f'{username} since_id:1'
-    tweets = sntwitter.TwitterSearchScraper(query).get_items()
-    # Check if any tweets were returned
-    return any(True for tweet in tweets)
+    # Initialize the ApifyClient with your API token
+    client = ApifyClient("apify_api_wjt7aOzxFZu7Ca4aVaYr2z4m6iX1rg0A0qfF")
+    username = username
+    # Prepare the actor input with the user-provided handle
+    run_input = {
+        "handle": [username],
+        "mode": "own",
+        "tweetsDesired": 1,
+        "searchMode": "top",
+        "profilesDesired": 1,
+        "relativeToDate": "",
+        "relativeFromDate": "",
+        "proxyConfig": {"useApifyProxy": True},
+        "extendOutputFunction": """async ({ data, item, page, request, customData, Apify }) => {
+      return item;
+    }""",
+        "extendScraperFunction": """async ({ page, request, addSearch, addProfile, _, addThread, addEvent, customData, Apify, signal, label }) => {
+
+    }""",
+        "customData": {},
+        "handlePageTimeoutSecs": 500,
+        "maxRequestRetries": 6,
+        "maxIdleTimeoutSecs": 60,
+    }
+
+    # Run the actor and wait for it to finish
+    run = client.actor("quacker/twitter-scraper").call(run_input=run_input)
+
+    # Fetch the actor results from the run's dataset (if there are any)
+    for item in client.dataset(run["defaultDatasetId"]).iterate_items():
+        if item["full_text"]:
+            return True
+    return False
 
 
 if __name__ == "__main__":

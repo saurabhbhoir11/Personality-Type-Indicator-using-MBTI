@@ -3,11 +3,14 @@ from apify_client import ApifyClient
 # Initialize the ApifyClient with your API token
 client = ApifyClient("apify_api_wjt7aOzxFZu7Ca4aVaYr2z4m6iX1rg0A0qfF")
 
-# Prepare the actor input
+# Prompt the user for input
+handle = input("Enter a Twitter handle to scrape: ")
+
+# Prepare the actor input with user-provided handle
 run_input = {
-    "handle": ["narendramodi"],
+    "handle": [handle],
     "mode": "own",
-    "tweetsDesired": 10,
+    "tweetsDesired": 5,
     "searchMode": "top",
     "profilesDesired": 1,
     "relativeToDate": "",
@@ -27,7 +30,11 @@ run_input = {
 
 # Run the actor and wait for it to finish
 run = client.actor("quacker/twitter-scraper").call(run_input=run_input)
+tweets = ''
 
-# Fetch and print actor results from the run's dataset (if there are any)
+# Fetch and concatenate actor results from the run's dataset (if there are any)
 for item in client.dataset(run["defaultDatasetId"]).iterate_items():
-    print(item["full_text"])
+    tweets += str(item["full_text"])
+
+# Print the final concatenated string
+print(tweets)

@@ -85,8 +85,6 @@ def home():
     return render_template('index.html')
 
 
-
-
 @app.route('/getTweets', methods=['GET', 'POST'])
 def getTweets():
     if request.method == 'POST':
@@ -157,6 +155,7 @@ def takeTest():
             val = request.form[name]
             score.append(int(val))
         processTest(score, n)
+        print(score)
         print('the length of score is ' + str(len(score)))
         if count == 10:
             print("hello")
@@ -168,67 +167,60 @@ def takeTest():
 @app.route('/testResult')
 def testResult():
     type = getType()
+    results = getFullForm(type)
+    strengths, weaknesses = getStrength_Weakness(type)
     print(type)
-    return render_template('result.html')
+    return render_template('result.html', results=results, strengths=strengths, weaknesses=weaknesses)
 
 
 def processTest(score, n):
-    n = n
+    num = n - 5
     score = score
-    print('n1 is ' + str(n))
     i = int(session.get('i', 0))
     e = int(session.get('e', 0))
-    n = int(session.get('n', 0))
+    ns = int(session.get('ns', 0))
     s = int(session.get('s', 0))
     t = int(session.get('t', 0))
     f = int(session.get('f', 0))
     j = int(session.get('j', 0))
     p = int(session.get('p', 0))
-    flag = int(session.get('flag', 0))
-    for sc in range(0,6):
-        print('the value of sc is ' + str(sc))
-        temp = n%15
-        if temp == 0:
-            flag += 1
-        n += 1
-        if flag == 0:
+    for sc in range(0, 6):
+        if 0 < num < 16:
             if score[sc] < 0:
-                i += abs(sc)
+                i += abs(score[sc])
                 session['i'] = i
             else:
-                e += abs(sc)
+                e += score[sc]
                 session['e'] = e
-        elif flag == 1:
-            if sc < 0:
-                s += abs(sc)
+        elif 15 < num < 31:
+            if score[sc] < 0:
+                s += abs(score[sc])
                 session['s'] = s
             else:
-                n += abs(sc)
-                session['n'] = n
-        elif flag == 2:
-            if sc < 0:
-                f += abs(sc)
+                ns += score[sc]
+                session['ns'] = ns
+        elif 30 < num < 46:
+            if score[sc] < 0:
+                f += abs(score[sc])
                 session['f'] = f
             else:
-                t += abs(sc)
+                t += score[sc]
                 session['t'] = t
-        elif flag == 3:
-            if sc < 0:
-                p += abs(sc)
+        elif 45 < num < 61:
+            if score[sc] < 0:
+                p += abs(score[sc])
                 session['p'] = p
             else:
-                j += abs(sc)
+                j += score[sc]
                 session['j'] = j
-        session['flag'] = flag
-        print('n2 is ' + str(n))
-        print('flag is ' + str(flag))
+        num += 1
 
 
 def preprocess(tweets):
     # converting all text/posts to lower case
     tweets = tweets.lower()
 
-    '''This function takes a list of texual data as input.
+    '''This function takes a list of textual data as input.
        It performs pre-processing and natural language processing on the data.
        It returns the processed textual data list as output.'''
 
@@ -298,8 +290,8 @@ def getType():
     print("i = " + str(i))
     e = int(session.get('e', 0))
     print("e = " + str(e))
-    n = int(session.get('n', 0))
-    print("n = " + str(n))
+    ns = int(session.get('ns', 0))
+    print("n = " + str(ns))
     s = int(session.get('s', 0))
     print("s = " + str(s))
     t = int(session.get('t', 0))
@@ -315,7 +307,7 @@ def getType():
         type += 'I'
     else:
         type += 'E'
-    if n > s:
+    if ns > s:
         type += 'N'
     else:
         type += 'S'
@@ -328,6 +320,22 @@ def getType():
     else:
         type += 'P'
     return type
+
+
+def getFullForm(type):
+    fullForm = []
+    allForms = dict(
+        I='Introvert',
+        E='Extrovert',
+        N='Intuitive',
+        S='Sensor',
+        T='Thinker',
+        F='Feeler',
+        J='Judger',
+        P='Perceiver')
+    for i in type:
+        fullForm.append(allForms[i])
+    return fullForm
 
 
 def predict(tweets):
@@ -659,47 +667,16 @@ def getQuestions(n):
     return curr_list, n
 
 
-# def check_username(username):
-#     # Format the username with the @ symbol if it doesn't already have it
-#     if username[0] != '@':
-#         username = '@' + username
-#     # Use snscrape to search for the Twitter user with the given username
-#     query = f'{username} since_id:1'
-#     tweets = sntwitter.TwitterSearchScraper(query).get_items()
-#     # Check if any tweets were returned
-#     return any(True for tweet in tweets)
-
-
-
 def check_username(username):
-    # Initialize the ApifyClient with your API token
-    client = ApifyClient("apify_api_wjt7aOzxFZu7Ca4aVaYr2z4m6iX1rg0A0qfF")
+    # Format the username with the @ symbol if it doesn't already have it
+    if username[0] != '@':
+        username = '@' + username
+    # Use snscrape to search for the Twitter user with the given username
+    query = f'{username} since_id:1'
+    tweets = sntwitter.TwitterSearchScraper(query).get_items()
+    # Check if any tweets were returned
+    return any(True for tweet in tweets)
 
-    # Prepare the actor input with the user-provided handle
-    run_input = {
-        "handle": [username],
-        "mode": "own",
-        "proxyConfig": {"useApifyProxy": True},
-        "extendOutputFunction": """async ({ data, item, page, request, customData, Apify }) => {
-          return item;
-        }""",
-        "extendScraperFunction": """async ({ page, request, addSearch, addProfile, _, addThread, addEvent, customData, Apify, signal, label }) => {
-
-        }""",
-        "customData": {},
-        "handlePageTimeoutSecs": 500,
-        "maxRequestRetries": 6,
-        "maxIdleTimeoutSecs": 60,
-    }
-
-    # Run the actor and wait for it to finish
-    run = client.actor("quacker/twitter-scraper").call(run_input=run_input)
-
-    # Fetch the actor results from the run's dataset (if there are any)
-    for item in client.dataset(run["defaultDatasetId"]).iterate_items():
-        if item["full_text"]:
-            return True
-    return False
 
 if __name__ == "__main__":
     app.run(debug=True)
